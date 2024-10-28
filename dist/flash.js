@@ -1,16 +1,17 @@
-import { Transport, ESPLoader } from "esptool-js";
+// @ts-ignore-next-line
+import { Transport } from "esptool-js/webserial.js";
+// @ts-ignore-next-line
+import { ESPLoader } from "esptool-js/ESPLoader.js";
 import { sleep } from "./util/sleep";
 const resetTransport = async (transport) => {
     await transport.device.setSignals({
         dataTerminalReady: false,
         requestToSend: true,
     });
-    await sleep(250);
     await transport.device.setSignals({
         dataTerminalReady: false,
         requestToSend: false,
     });
-    await sleep(250);
 };
 export const flash = async (onEvent, port, manifestPath, manifest, eraseFirst) => {
     let build;
@@ -22,12 +23,7 @@ export const flash = async (onEvent, port, manifestPath, manifest, eraseFirst) =
         chipFamily,
     });
     const transport = new Transport(port);
-    const esploader = new ESPLoader({
-        transport,
-        baudrate: 115200,
-        romBaudrate: 115200,
-        enableTracing: false,
-    });
+    const esploader = new ESPLoader(transport, 115200);
     // For debugging
     window.esploader = esploader;
     fireStateEvent({
@@ -36,8 +32,8 @@ export const flash = async (onEvent, port, manifestPath, manifest, eraseFirst) =
         details: { done: false },
     });
     try {
-        await esploader.main();
-        await esploader.flashId();
+        await esploader.main_fn();
+        await esploader.flash_id();
     }
     catch (err) {
         console.error(err);
@@ -50,7 +46,7 @@ export const flash = async (onEvent, port, manifestPath, manifest, eraseFirst) =
         await transport.disconnect();
         return;
     }
-    chipFamily = esploader.chip.CHIP_NAME;
+    chipFamily = await esploader.chip.CHIP_NAME;
     if (!esploader.chip.ROM_TEXT) {
         fireStateEvent({
             state: "error" /* FlashStateType.ERROR */,
@@ -132,7 +128,7 @@ export const flash = async (onEvent, port, manifestPath, manifest, eraseFirst) =
             message: "Erasing device...",
             details: { done: false },
         });
-        await esploader.eraseFlash();
+        await esploader.erase_flash();
         fireStateEvent({
             state: "erasing" /* FlashStateType.ERASING */,
             message: "Device erased",
@@ -150,15 +146,9 @@ export const flash = async (onEvent, port, manifestPath, manifest, eraseFirst) =
     });
     let totalWritten = 0;
     try {
-        await esploader.writeFlash({
+        await esploader.write_flash({
             fileArray,
-            flashSize: "keep",
-            flashMode: "keep",
-            flashFreq: "keep",
-            eraseAll: false,
-            compress: true,
-            // report progress
-            reportProgress: (fileIndex, written, total) => {
+            reportProgress(fileIndex, written, total) {
                 const uncompressedWritten = (written / total) * fileArray[fileIndex].data.length;
                 const newPct = Math.floor(((totalWritten + uncompressedWritten) / totalSize) * 100);
                 // we're done with this file

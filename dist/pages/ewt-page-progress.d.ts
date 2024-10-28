@@ -1,5 +1,5 @@
 import { LitElement, TemplateResult } from "lit";
-import "../components/ew-circular-progress";
+import "../components/ewt-circular-progress";
 declare class EwtPageProgress extends LitElement {
     label: string | TemplateResult;
     progress: number | undefined;

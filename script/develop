@@ -13,4 +13,5 @@ tsc || true
 
 npm exec -- serve -p 5001 &
 npm exec -- tsc --watch &
-npm exec -- rollup -c --watch
+npm exec -- rollup -c --watch &
+wait

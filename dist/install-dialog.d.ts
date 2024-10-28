@@ -1,16 +1,14 @@
 /// <reference types="w3c-web-serial" />
 import { LitElement, PropertyValues, TemplateResult } from "lit";
-import "./components/ew-text-button";
-import "./components/ew-list";
-import "./components/ew-list-item";
-import "./components/ew-divider";
-import "./components/ew-checkbox";
+import "./components/ewt-button";
+import "./components/ewt-checkbox";
 import "./components/ewt-console";
-import "./components/ew-dialog";
-import "./components/ew-icon-button";
-import "./components/ew-filled-text-field";
-import "./components/ew-filled-select";
-import "./components/ew-select-option";
+import "./components/ewt-dialog";
+import "./components/ewt-formfield";
+import "./components/ewt-icon-button";
+import "./components/ewt-textfield";
+import "./components/ewt-select";
+import "./components/ewt-list-item";
 import "./pages/ewt-page-progress";
 import "./pages/ewt-page-message";
 import { Logger, Manifest } from "./const.js";
@@ -35,16 +33,15 @@ export declare class EwtInstallDialog extends LitElement {
     private _busy;
     private _ssids?;
     private _selectedSsid;
-    private _bodyOverflow;
     protected render(): TemplateResult<1>;
     _renderProgress(label: string | TemplateResult, progress?: number): TemplateResult<1>;
-    _renderError(label: string): [string, TemplateResult];
-    _renderDashboard(): [string, TemplateResult, boolean];
-    _renderDashboardNoImprov(): [string, TemplateResult, boolean];
-    _renderProvision(): [string | undefined, TemplateResult];
+    _renderError(label: string): [string, TemplateResult, boolean];
+    _renderDashboard(): [string, TemplateResult, boolean, boolean];
+    _renderDashboardNoImprov(): [string, TemplateResult, boolean, boolean];
+    _renderProvision(): [string | undefined, TemplateResult, boolean];
     _renderAskErase(): [string | undefined, TemplateResult];
-    _renderInstall(): [string | undefined, TemplateResult, boolean];
-    _renderLogs(): [string | undefined, TemplateResult];
+    _renderInstall(): [string | undefined, TemplateResult, boolean, boolean];
+    _renderLogs(): [string | undefined, TemplateResult, boolean];
     willUpdate(changedProps: PropertyValues): void;
     private _updateSsids;
     protected firstUpdated(changedProps: PropertyValues): void;
@@ -55,7 +52,6 @@ export declare class EwtInstallDialog extends LitElement {
     private _confirmInstall;
     private _doProvision;
     private _handleDisconnect;
-    private _closeDialog;
     private _handleClose;
     /**
      * Return if the device runs same firmware as manifest.
@@ -66,7 +62,6 @@ export declare class EwtInstallDialog extends LitElement {
      */
     private get _isSameVersion();
     private _closeClientWithoutEvents;
-    private _preventDefault;
     static styles: import("lit").CSSResult[];
 }
 declare global {

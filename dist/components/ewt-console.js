@@ -126,17 +126,15 @@ export class EwtConsole extends HTMLElement {
         }
     }
     async reset() {
-        this.logger.debug("Triggering reset");
+        this.logger.debug("Triggering reset.");
         await this.port.setSignals({
             dataTerminalReady: false,
             requestToSend: true,
         });
-        await sleep(250);
         await this.port.setSignals({
             dataTerminalReady: false,
             requestToSend: false,
         });
-        await sleep(250);
         await new Promise((resolve) => setTimeout(resolve, 1000));
     }
 }

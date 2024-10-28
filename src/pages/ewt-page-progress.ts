@@ -1,6 +1,6 @@
 import { LitElement, html, css, TemplateResult } from "lit";
 import { property } from "lit/decorators.js";
-import "../components/ew-circular-progress";
+import "../components/ewt-circular-progress";
 
 class EwtPageProgress extends LitElement {
   @property() label!: string | TemplateResult;
@@ -10,13 +10,14 @@ class EwtPageProgress extends LitElement {
   render() {
     return html`
       <div>
-        <ew-circular-progress
+        <ewt-circular-progress
           active
           ?indeterminate=${this.progress === undefined}
-          .value=${this.progress !== undefined
+          .progress=${this.progress !== undefined
             ? this.progress / 100
             : undefined}
-        ></ew-circular-progress>
+          density="8"
+        ></ewt-circular-progress>
         ${this.progress !== undefined ? html`<div>${this.progress}%</div>` : ""}
       </div>
       ${this.label}
@@ -29,7 +30,7 @@ class EwtPageProgress extends LitElement {
       flex-direction: column;
       text-align: center;
     }
-    ew-circular-progress {
+    ewt-circular-progress {
       margin-bottom: 16px;
     }
   `;

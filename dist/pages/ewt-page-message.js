@@ -1,6 +1,7 @@
 import { __decorate } from "tslib";
 import { LitElement, html, css } from "lit";
 import { property } from "lit/decorators.js";
+import "../components/ewt-circular-progress";
 class EwtPageMessage extends LitElement {
     render() {
         return html `
@@ -19,6 +20,9 @@ EwtPageMessage.styles = css `
       font-size: 50px;
       line-height: 80px;
       color: black;
+    }
+    ewt-circular-progress {
+      margin-bottom: 16px;
     }
   `;
 __decorate([

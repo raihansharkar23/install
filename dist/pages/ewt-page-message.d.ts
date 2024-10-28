@@ -1,4 +1,5 @@
 import { LitElement, TemplateResult } from "lit";
+import "../components/ewt-circular-progress";
 declare class EwtPageMessage extends LitElement {
     icon: string;
     label: string | TemplateResult;

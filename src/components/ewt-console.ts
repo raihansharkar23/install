@@ -100,7 +100,7 @@ export class EwtConsole extends HTMLElement {
             write: (chunk) => {
               this._console!.addLine(chunk.replace("\r", ""));
             },
-          }),
+          })
         );
       if (!abortSignal.aborted) {
         this._console!.addLine("");
@@ -141,17 +141,15 @@ export class EwtConsole extends HTMLElement {
   }
 
   public async reset() {
-    this.logger.debug("Triggering reset");
+    this.logger.debug("Triggering reset.");
     await this.port.setSignals({
       dataTerminalReady: false,
       requestToSend: true,
     });
-    await sleep(250);
     await this.port.setSignals({
       dataTerminalReady: false,
       requestToSend: false,
     });
-    await sleep(250);
     await new Promise((resolve) => setTimeout(resolve, 1000));
   }
 }
